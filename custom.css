@@ -1,0 +1,8 @@
+/* MACANDBIRD — personal overrides.
+   Anything you put here loads after the theme and wins on equal specificity.
+   Example: change the accent colour to match a custom macOS accent:
+
+   :root {
+       --mb-accent: #ff9500;
+   }
+*/

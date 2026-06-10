@@ -1,0 +1,1067 @@
+/* MACANDBIRD — A MACOS / APPLE MAIL THEME FOR THUNDERBIRD     */
+/* Adapted from FluentBird by Danny King (www.dannyking.co.uk) */
+/* FluentBird is distributed under the MIT License             */
+/* This adaptation is likewise distributed under MIT           */
+
+/* =====================================================
+   CUSTOM OVERRIDES
+   If you want to make your own tweaks, place your own
+   CSS in a file named:
+       custom.css
+   in the same folder as this file.
+   ===================================================== */
+
+@import url("custom.css");
+
+/* =====================================================
+   DESIGN TOKENS (macOS system palette)
+   ===================================================== */
+
+:root {
+	/* Accent — macOS system blue */
+	--mb-accent: #007aff;
+	--mb-accent-text: #ffffff;
+
+	/* Labels */
+	--mb-text-secondary: rgba(60, 60, 67, 0.6);
+	--mb-text-tertiary: rgba(60, 60, 67, 0.33);
+
+	/* Toolbar / template-image icon tint (monochrome, like Apple Mail) */
+	--mb-icon: #5d5d63;
+
+	/* Surfaces */
+	--mb-sidebar-bg: #f2f2f4;
+	--mb-content-bg: #ffffff;
+
+	/* Selection */
+	--mb-sidebar-pill: rgba(0, 0, 0, 0.085);
+	--mb-selected-unfocused: #e3e3e6;
+
+	/* Hairlines & hover */
+	--mb-separator: rgba(0, 0, 0, 0.1);
+	--mb-hover: rgba(0, 0, 0, 0.05);
+
+	/* Tabs */
+	--mb-tab-selected: rgba(255, 255, 255, 0.78);
+
+	/* Banner (infobar) */
+	--mb-banner-bg: #f5f5f7;
+}
+
+/* San Francisco everywhere (no-op on macOS, graceful elsewhere) */
+:root {
+	font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+		"Helvetica Neue", sans-serif !important;
+}
+
+/* =====================================================
+   LAYOUT & WINDOW CHROME
+   ===================================================== */
+
+/* Hide hamburger menu (macOS has a real menu bar) and shortcut hints */
+#button-appmenu {
+	display: none !important;
+}
+
+.kbd-container {
+	display: none !important;
+}
+
+/* Keep the titlebar clean so it blends with the toolbar, Apple Mail style */
+@media (-moz-platform: macos) {
+	#titlebar {
+		background: transparent !important;
+	}
+}
+
+/* =====================================================
+   TAB BAR
+   ===================================================== */
+
+#tabs-toolbar {
+	background-color: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+	margin-bottom: 6px !important;
+}
+
+.tabmail-tab {
+	border-radius: 7px !important;
+}
+
+/* Selected tab: soft raised pill, like Safari / macOS segmented controls */
+.tabmail-tab[selected="true"] {
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 0 0.5px rgba(0, 0, 0, 0.06) !important;
+}
+
+.tab-background[selected="true"] {
+	background-color: var(--mb-tab-selected) !important;
+	border-radius: 7px !important;
+}
+
+/* Remove active-tab indicator line */
+.tab-line {
+	height: 0px !important;
+}
+
+#tabmail-arrowscrollbox {
+	margin-left: 0px !important;
+}
+
+/* Remove stroke artifact on tab icons */
+.tab-icon-image {
+	stroke: transparent !important;
+}
+
+/* Suppress compact-mode sort header label */
+.sort-header-details {
+	display: none !important;
+}
+
+/* =====================================================
+   SPACES TOOLBAR & SIDEBAR ICONS
+   Monochrome template images; the active space takes
+   the accent colour — like a macOS source-list rail.
+   ===================================================== */
+
+#spacesToolbar {
+	background-color: transparent !important;
+	background-image: none !important;
+	border: 0px !important;
+}
+
+/* Hide default icon images; replaced via masked ::before below */
+#mailButton img,
+#addressBookButton img,
+#calendarButton img,
+#tasksButton img,
+#chatButton img,
+#settingsButton img,
+#folderPaneGetMessages img {
+	display: none !important;
+}
+
+#mailButton,
+#addressBookButton,
+#calendarButton,
+#tasksButton,
+#chatButton,
+#settingsButton {
+	position: relative !important;
+	width: 30px !important;
+}
+
+#mailButton::before,
+#addressBookButton::before,
+#calendarButton::before,
+#tasksButton::before,
+#chatButton::before,
+#settingsButton::before {
+	content: "" !important;
+	display: block !important;
+	width: 19px;
+	height: 19px;
+	margin: auto;
+	mask-repeat: no-repeat !important;
+	mask-size: contain !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	pointer-events: none;
+}
+
+#mailButton::before {
+	mask-image: url("Icons/mail.svg") !important;
+}
+
+#addressBookButton::before {
+	mask-image: url("Icons/person.svg") !important;
+}
+
+#calendarButton::before {
+	mask-image: url("Icons/calendar.svg") !important;
+}
+
+#tasksButton::before {
+	mask-image: url("Icons/tasks.svg") !important;
+}
+
+#chatButton::before {
+	mask-image: url("Icons/chat.svg") !important;
+}
+
+#settingsButton::before {
+	mask-image: url("Icons/settings.svg") !important;
+}
+
+/* Active space takes the accent colour */
+#spacesToolbar button.current::before,
+#spacesToolbar button[aria-pressed="true"]::before {
+	background-color: var(--mb-accent) !important;
+}
+
+/* Hide settings button label text */
+.settings-btn-container #settingsButton,
+.settings-btn-container:hover #settingsButton {
+	color: transparent !important;
+}
+
+#folderPaneGetMessages {
+	position: relative !important;
+	width: 30px !important;
+}
+
+#folderPaneGetMessages::before {
+	content: "" !important;
+	display: block !important;
+	width: 17px;
+	height: 17px;
+	margin: auto;
+	mask-image: url("Icons/sync.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: contain !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	pointer-events: none;
+}
+
+/* =====================================================
+   FOLDER TREE (Apple Mail sidebar)
+   All folder symbols are tinted with the accent colour;
+   selection is a translucent rounded pill.
+   ===================================================== */
+
+#folderPane {
+	background-color: var(--mb-sidebar-bg) !important;
+}
+
+#folderPaneHeaderBar {
+	background-color: transparent !important;
+	border-bottom: 0 !important;
+}
+
+/* Account-level row: small, semibold, secondary — a section header */
+#folderTree li[data-server-type] > .container > .name {
+	font-weight: 700 !important;
+	font-size: 0.82rem !important;
+	color: var(--mb-text-secondary) !important;
+	letter-spacing: 0.01em !important;
+}
+
+#folderTree li[data-server-type]:not(:first-of-type) > .container {
+	margin-top: 14px !important;
+}
+
+/* Folder icon overrides — every symbol accent-tinted, like Apple Mail */
+#folderTree li[data-folder-type="inbox"] > .container > .icon {
+	content: none !important;
+	mask-image: url("Icons/inbox.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-accent) !important;
+}
+#folderTree li[data-folder-type="inbox"] > .container > .icon[style*="--icon-color"] {
+	background-color: var(--icon-color) !important;
+}
+
+#folderTree li[data-folder-type="drafts"] > .container > .icon {
+	mask-image: url("Icons/drafts.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-accent) !important;
+}
+
+#folderTree li[data-folder-type="sent"] > .container > .icon {
+	mask-image: url("Icons/sent.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-accent) !important;
+}
+
+#folderTree li[data-folder-type="junk"] > .container > .icon {
+	mask-image: url("Icons/junk.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-accent) !important;
+}
+
+#folderTree li[data-folder-type="trash"] > .container > .icon {
+	mask-image: url("Icons/trash.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-accent) !important;
+}
+
+#folderTree li[data-folder-type="archive"] > .container > .icon {
+	mask-image: url("Icons/archive.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-accent) !important;
+}
+
+#folderTree li[data-folder-type="outbox"] > .container > .icon {
+	mask-image: url("Icons/outbox.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-accent) !important;
+}
+
+#folderTree li[data-folder-type="templates"] > .container > .icon {
+	content: none !important;
+	mask-image: url("Icons/templates.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-accent) !important;
+}
+#folderTree li[data-folder-type="templates"] > .container > .icon[style*="--icon-color"] {
+	background-color: var(--icon-color) !important;
+}
+
+/* Generic folder icon */
+#folderTree li:not([data-folder-type]) > .container > .icon {
+	content: none !important;
+	mask-image: url("Icons/folder.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-accent) !important;
+}
+
+#folderTree li:not([data-folder-type]) > .container > .icon[style*="--icon-color"] {
+	background-color: var(--icon-color) !important;
+}
+
+/* Tag rows keep their own colours — like flags in Apple Mail */
+#folderTree li[data-tag-key] > .container > .icon {
+	display: block !important;
+	width: 16px !important;
+	height: 16px !important;
+	background-color: var(--icon-color) !important;
+	mask-image: url("Icons/tag.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+}
+
+#folderTree li[data-tag-key="$label1"] > .container > .icon { background-color: var(--tag-\$label1-backcolor) !important; }
+#folderTree li[data-tag-key="$label2"] > .container > .icon { background-color: var(--tag-\$label2-backcolor) !important; }
+#folderTree li[data-tag-key="$label3"] > .container > .icon { background-color: var(--tag-\$label3-backcolor) !important; }
+#folderTree li[data-tag-key="$label4"] > .container > .icon { background-color: var(--tag-\$label4-backcolor) !important; }
+#folderTree li[data-tag-key="$label5"] > .container > .icon { background-color: var(--tag-\$label5-backcolor) !important; }
+
+/* Mail account icon — hidden; account rows read as plain section headers */
+#folderTree li[data-server-type] > .container > .icon {
+	content: none !important;
+	list-style-image: none !important;
+	display: none !important;
+}
+
+/* Unread count: plain secondary number, right where Apple Mail puts it */
+.unread > .container > .unread-count {
+	display: unset !important;
+	background-color: transparent !important;
+	color: var(--mb-text-secondary) !important;
+	font-size: 0.95rem !important;
+	font-weight: 600 !important;
+}
+
+/* Twisty indent */
+ul[role="tree"] .container .twisty,
+ol[role="tree"] .container .twisty {
+	margin-left: 6px !important;
+}
+
+/* Drop the side indicator bar — selection is the pill itself */
+:is(ul, ol)[role="tree"] li.selected > .container::before {
+	display: none !important;
+}
+
+/* Selected/focused folder row: translucent rounded pill (Big Sur sidebar) */
+:is(ul, ol)[role="tree"] li.selected > .container,
+:is(ul, ol)[role="tree"] li.selected.current > .container {
+	border-color: transparent !important;
+	background-color: var(--mb-sidebar-pill) !important;
+	border-radius: 7px !important;
+}
+
+/* Fix for icon clashes in navigator (inherited from FluentBird) */
+#folderTree li[data-folder-type="sent"] > .container > .icon,
+#folderTree li[data-folder-type="drafts"] > .container > .icon,
+#folderTree li[data-folder-type="inbox"] > .container > .icon,
+#folderTree li[data-folder-type="trash"] > .container > .icon {
+	--icon-color: transparent !important;
+}
+
+#folderTree li[data-folder-type="junk"] > .container > .icon {
+	content: var(--icon-spam);
+	--icon-color: transparent !important;
+}
+
+#folderTree li .icon {
+	content: none !important;
+	display: block !important;
+	overflow: hidden !important;
+}
+
+#folderTree li[data-server-type] > .container > .icon {
+	display: none !important;
+}
+
+/* =====================================================
+   THREAD PANE (Apple Mail message list)
+   ===================================================== */
+
+#threadPaneHeaderBar {
+	border-bottom: 0px !important;
+}
+
+/* Filter and display button icons */
+#threadPaneQuickFilterButton {
+	background-image: url("Icons/filter.svg") !important;
+}
+
+#threadPaneDisplayButton,
+#displayButton {
+	background-image: url("Icons/list.svg") !important;
+}
+
+/* Hide thread reply count controls */
+button .replies-icon,
+button .thread-replies {
+	display: none !important;
+}
+
+/* Subject indent for child rows with replies */
+tr.children .thread-card-button:has(.thread-replies[data-l10n-id]) ~ .thread-card-subject-container .subject {
+	margin-left: 15px !important;
+}
+
+/* Card layout spacing */
+.thread-card-dynamic-row {
+	gap: 0px !important;
+	row-gap: 0px !important;
+	padding-bottom: 0px !important;
+	margin-bottom: 0px !important;
+}
+
+.thread-card-dynamic-row > .thread-card-button {
+	align-self: end !important;
+}
+
+/* Card subject / preview text: secondary label colour */
+.thread-card-subject-container {
+	color: var(--mb-text-secondary);
+	font-size: 0.94rem !important;
+	width: 85%;
+}
+
+/* Sender name: SF semibold, Apple Mail weight */
+.sender {
+	font-size: 1.05rem !important;
+	font-weight: 600 !important;
+	margin-top: 8px !important;
+}
+
+& .card-container .sender {
+	padding-inline-start: 3px !important;
+}
+
+/* Compact sender text for short-height cards */
+tr.card-layout[style*="height: 49px"] .sender,
+tr.card-layout[style*="height: 50px"] .sender {
+	font-size: 1rem !important;
+	font-weight: 600 !important;
+	margin-top: 5px !important;
+}
+
+/* Child thread subject font size */
+tr.card-layout.children span.subject {
+	font-size: 0.95em !important;
+}
+
+/* Unread indicator: solid accent dot, Apple Mail style */
+#threadTree[rows="thread-card"] .card-layout td .card-container .read-status {
+	content: var(--read-status-icon) !important;
+	height: var(--read-status-size) !important;
+	width: var(--read-status-size) !important;
+	fill: var(--mb-accent) !important;
+	stroke: var(--mb-accent) !important;
+	margin-left: 0 !important;
+}
+
+/* Unread indicator inline offset */
+#threadTree[rows="thread-card"] .card-layout td .card-container::before {
+	inset-inline-start: calc(var(--indicator-width) * 2 - var(--indicator-gap)) !important;
+	background-color: var(--mb-accent) !important;
+}
+
+/* Remove row highlight behind cards; apply highlight to card itself */
+[is="tree-view-table-body"] tr.selected.current {
+	background-color: transparent !important;
+}
+
+/* Selected card, window focused: solid accent pill with white text */
+[is="tree-view-table-body"] .card-layout.selected.current .card-container {
+	background-color: var(--mb-accent) !important;
+	border: 1px solid transparent !important;
+	border-radius: 8px !important;
+}
+
+[is="tree-view-table-body"] .card-layout.selected.current .card-container :is(.sender, .subject, .date, .thread-card-subject-container) {
+	color: var(--mb-accent-text) !important;
+}
+
+[is="tree-view-table-body"] .card-layout.selected.current .card-container .read-status {
+	fill: var(--mb-accent-text) !important;
+	stroke: var(--mb-accent-text) !important;
+}
+
+/* Unfocused selected card: quiet grey pill, default text */
+#threadTree[rows="thread-card"]:not(:focus, :focus-within) .card-layout.selected.current .card-container,
+#threadTree[rows="thread-card"]:not(:focus, :focus-within) .card-layout[data-properties~="junk"].selected.current .card-container {
+	background-color: var(--mb-selected-unfocused) !important;
+	border: 1px solid transparent !important;
+}
+
+#threadTree[rows="thread-card"]:not(:focus, :focus-within) .card-layout.selected.current .card-container :is(.sender, .subject, .date) {
+	color: inherit !important;
+}
+
+#threadTree[rows="thread-card"]:not(:focus, :focus-within) .card-layout.selected.current .card-container .thread-card-subject-container {
+	color: var(--mb-text-secondary) !important;
+}
+
+#threadTree[rows="thread-card"]:not(:focus, :focus-within) .card-layout.selected.current .card-container .read-status {
+	fill: var(--mb-accent) !important;
+	stroke: var(--mb-accent) !important;
+}
+
+&.selected.current {
+	--tree-card-background: var(--mb-selected-unfocused);
+}
+
+/* Selected table-layout row */
+tr.table-layout.selected.current {
+	background-color: var(--mb-accent) !important;
+	color: var(--mb-accent-text) !important;
+}
+
+/* Twisty button position fix */
+.button.button-flat.button-reset.twisty.thread-card-button {
+	margin-top: -38px !important;
+}
+
+.thread-card-icon-info {
+	margin-top: -15px;
+}
+
+/* Grouped-by-sort child rows */
+tree-view[data-show-grouped-by-sort="true"] .card-layout.children {
+	height: 30px !important;
+}
+
+tree-view[data-show-grouped-by-sort="true"] .card-layout.children *,
+tree-view[data-show-grouped-by-sort="true"] .card-layout.children:hover,
+tree-view[data-show-grouped-by-sort="true"] .card-layout.children *:hover {
+	background: none !important;
+	background-color: transparent !important;
+	box-shadow: none !important;
+	border-color: transparent !important;
+	color: inherit !important;
+	filter: none !important;
+	outline: none !important;
+	text-decoration: none !important;
+	transition: none !important;
+}
+
+/* Empty pane placeholder icon */
+#placeholderNoMessages::before {
+	background-image: url("Icons/mail-placeholder.svg") !important;
+}
+
+/* List header indent */
+.list-header-title {
+	margin-left: 10px !important;
+}
+
+/* =====================================================
+   MESSAGE HEADER & READING PANE
+   ===================================================== */
+
+/* Header label vertical alignment */
+.message-header-label {
+	align-self: center !important;
+}
+
+#expandedtoLabel,
+#expandedccLabel,
+#expandedreply-toLabel {
+	margin-top: 3px !important;
+}
+
+/* Recipient avatar: neutral macOS contact grey */
+.recipient-avatar {
+	height: 40px !important;
+	width: 40px !important;
+	font-size: 1.15rem !important;
+	color: #fff !important;
+	background-color: #8e8e93 !important;
+	background-image: linear-gradient(rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.05)) !important;
+}
+
+.recipients-list {
+	margin-top: 5px !important;
+}
+
+.recipient-multi-line-name {
+	font-size: 1.3rem !important;
+	font-weight: 600 !important;
+}
+
+/* Address book button in recipient row */
+.recipient-address-book-button {
+	width: 12px !important;
+	height: 12px !important;
+	mask-image: url("Icons/person.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 12px 12px !important;
+	mask-position: center !important;
+	background-color: var(--mb-accent) !important;
+}
+
+.recipient-address-book-button img {
+	display: none !important;
+}
+
+/* To/Cc/Reply-To headings */
+#toHeading,
+#ccHeading,
+#reply-toHeading {
+	margin-top: 5px !important;
+	font-weight: 600 !important;
+}
+
+/* Info bar (e.g. remote content notice): quiet macOS banner */
+.infobar.animated:not([value="maybeScam"]) {
+	width: 98% !important;
+	margin: auto !important;
+	--message-bar-background-color: var(--mb-banner-bg) !important;
+	margin-bottom: 10px !important;
+	border-radius: 8px !important;
+}
+
+.infobar.animated:not([value="maybeScam"]) .notification-button.small-button.footer-button.button-menu-list {
+	background-color: transparent !important;
+	padding: 3px !important;
+	padding-right: 20px !important;
+	padding-left: 10px !important;
+	border: none !important;
+	color: var(--mb-accent) !important;
+}
+
+.notification-button.small-button.footer-button.button-menu-list .button-text {
+	margin-bottom: 3px !important;
+	margin-right: 1px;
+}
+
+/* =====================================================
+   TOOLBAR ACTION BUTTONS (reply, forward, trash, etc.)
+   Borderless, monochrome template images — Apple Mail
+   toolbar buttons. Hover is a soft rounded wash.
+   ===================================================== */
+
+.toolbarbutton-1 {
+	background-color: transparent !important;
+	border-radius: 6px !important;
+}
+
+.toolbarbutton-1:hover {
+	background-color: var(--mb-hover) !important;
+}
+
+.toolbarbutton-1 .toolbarbutton-icon {
+	box-sizing: border-box !important;
+	width: 18px !important;
+	height: 18px !important;
+	color: var(--mb-icon) !important;
+}
+
+.toolbarbutton-icon {
+	margin-left: 5px;
+	margin-right: -5px;
+}
+
+/* No borders on message header buttons — they read as plain glyph buttons */
+#messageHeader:not(.message-header-buttons-only-icons) .toolbarbutton-1.message-header-view-button:not([is="toolbarbutton-menu-button"]) {
+	border-color: transparent !important;
+}
+
+#hdrReplyAllButton .toolbarbutton-menubutton-button,
+#hdrReplyAllButton .toolbarbutton-menubutton-dropmarker,
+#hdrReplyListButton .toolbarbutton-menubutton-button,
+#hdrReplyListButton .toolbarbutton-menubutton-dropmarker,
+#hdrReplyListButton {
+	border-color: transparent !important;
+}
+
+#hdrReplyListButton .toolbarbutton-menubutton-button,
+#hdrReplyListButton .toolbarbutton-menubutton-dropmarker {
+	border: 1px solid transparent !important;
+	box-sizing: border-box !important;
+}
+
+.toolbarbutton-menu-dropmarker {
+	margin-right: 5px;
+}
+
+.message-header-view-button .toolbarbutton-text {
+	padding-inline-start: 6px !important;
+	padding: 8px !important;
+}
+
+.icons-beside-text,
+.icons-only {
+	border-bottom: 0px solid rgba(0, 0, 0, 0.15) !important;
+}
+
+/* "More actions" button: hide default icon, inject custom SVG via ::before */
+#otherActionsButton {
+	position: relative !important;
+	padding-left: 20px !important;
+}
+
+#otherActionsButton .toolbarbutton-icon {
+	display: none;
+}
+
+#otherActionsButton::before {
+	content: "" !important;
+	display: block !important;
+	position: absolute !important;
+	width: 16px;
+	height: 16px;
+	left: 6px;
+	top: 50%;
+	transform: translateY(-50%);
+	mask-image: url("Icons/more.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: contain !important;
+	background-color: var(--mb-icon) !important;
+	pointer-events: none;
+}
+
+/* Masked SF-style icons for each header action button — one uniform tint */
+#hdrReplyButton .toolbarbutton-icon,
+#hdrReplyToSenderButton .toolbarbutton-icon {
+	list-style-image: none !important;
+	mask-image: url("Icons/reply.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+#hdrReplyAllButton .toolbarbutton-icon {
+	list-style-image: none !important;
+	mask-image: url("Icons/reply-all.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+#hdrReplyListButton .toolbarbutton-icon {
+	list-style-image: none !important;
+	mask-image: url("Icons/list-reply.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+#hdrForwardButton .toolbarbutton-icon {
+	list-style-image: none !important;
+	mask-image: url("Icons/forward.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+#hdrArchiveButton .toolbarbutton-icon {
+	list-style-image: none !important;
+	mask-image: url("Icons/archive.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+#hdrJunkButton .toolbarbutton-icon {
+	list-style-image: none !important;
+	mask-image: url("Icons/junk.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+#hdrTrashButton .toolbarbutton-icon {
+	list-style-image: none !important;
+	mask-image: url("Icons/trash.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+/* =====================================================
+   SEARCH BAR
+   ===================================================== */
+
+global-search-bar {
+	opacity: 0.85 !important;
+	padding: 5px !important;
+	border-radius: 8px !important;
+}
+
+.search-button-icon {
+	margin-right: 5px !important;
+}
+
+/* =====================================================
+   ADDRESS BOOK PANE
+   ===================================================== */
+
+#booksPaneCreateList {
+	background-image: url("Icons/book.svg") !important;
+}
+
+.bookRow-icon {
+	background-image: url("Icons/notepad-person.svg") !important;
+}
+
+/* Remove top border on contacts list */
+#cards[rows="ab-card-row"] {
+	border-top: 0px solid var(--splitter-color) !important;
+}
+
+/* =====================================================
+   TAB ICONS
+   Each rule replaces a Thunderbird default tab icon
+   with a masked SF-style glyph in the uniform tint.
+   ===================================================== */
+
+.tab-icon-image[src*="chrome://messenger/skin/icons/new/compact/inbox.svg"] {
+	content: none !important;
+	mask-image: url("Icons/inbox.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.tab-icon-image[src*="chrome://messenger/skin/icons/new/compact/folder.svg"] {
+	content: none !important;
+	mask-image: url("Icons/folder.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.tab-icon-image[src*="chrome://messenger/skin/icons/new/compact/spam.svg"] {
+	content: none !important;
+	mask-image: url("Icons/junk.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.tab-icon-image[src*="chrome://messenger/skin/icons/new/compact/trash.svg"] {
+	content: none !important;
+	mask-image: url("Icons/trash.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.tab-icon-image[src*="chrome://messenger/skin/icons/new/compact/address-book.svg"] {
+	content: none !important;
+	mask-image: url("Icons/contact.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.tab-icon-image[src*="chrome://messenger/skin/icons/new/compact/tasks.svg"] {
+	content: none !important;
+	mask-image: url("Icons/tasks.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.tab-icon-image[src*="chrome://messenger/skin/icons/new/compact/calendar.svg"] {
+	content: none !important;
+	mask-image: url("Icons/calendar.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.tab-icon-image[src*="chrome://messenger/skin/icons/new/compact/chat.svg"] {
+	content: none !important;
+	mask-image: url("Icons/chat.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.tab-icon-image[src*="chrome://messenger/skin/icons/new/compact/settings.svg"] {
+	content: none !important;
+	mask-image: url("Icons/settings-tab.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.tab-icon-image[src*="chrome://messenger/skin/icons/new/compact/mail-secure.svg"] {
+	content: none !important;
+	mask-image: url("Icons/mail.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.tab-icon-image[src*="chrome://messenger/skin/icons/new/compact/account-settings.svg"] {
+	content: none !important;
+	mask-image: url("Icons/person-tab.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.tab-icon-image[src*="chrome://mozapps/skin/extensions/extension.svg"] {
+	content: none !important;
+	mask-image: url("Icons/extention.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-icon) !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+/* =====================================================
+   DARK MODE
+   Token overrides do most of the work; only pre-coloured
+   background-image assets need swapping.
+   ===================================================== */
+
+@media (prefers-color-scheme: dark) {
+
+	:root {
+		--mb-accent: #0a84ff;
+
+		--mb-text-secondary: rgba(235, 235, 245, 0.6);
+		--mb-text-tertiary: rgba(235, 235, 245, 0.3);
+
+		--mb-icon: #a8a8ad;
+
+		--mb-sidebar-bg: #2a2a2c;
+		--mb-content-bg: #1e1e1e;
+
+		--mb-sidebar-pill: rgba(255, 255, 255, 0.12);
+		--mb-selected-unfocused: #3a3a3c;
+
+		--mb-separator: rgba(255, 255, 255, 0.12);
+		--mb-hover: rgba(255, 255, 255, 0.08);
+
+		--mb-tab-selected: rgba(255, 255, 255, 0.09);
+
+		--mb-banner-bg: #2c2c2e;
+	}
+
+	.tabmail-tab[selected="true"] {
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.06) !important;
+	}
+
+	#placeholderNoMessages::before {
+		background-image: url("Icons/mail-placeholder-dark.svg") !important;
+	}
+
+	/* Notification button text/icon colour fix */
+	.notification-button .button-text,
+	.notification-button .button-icon {
+		color: var(--mb-accent) !important;
+		fill: var(--mb-accent) !important;
+		filter: none !important;
+		opacity: 1 !important;
+	}
+
+	.notification-button.button-menu-list {
+		stroke: var(--mb-accent) !important;
+	}
+
+	/* Filter and display button icons — dark variants */
+	#threadPaneQuickFilterButton {
+		background-image: url("Icons/filter-dark.svg") !important;
+	}
+
+	#threadPaneDisplayButton {
+		background-image: url("Icons/list-dark.svg") !important;
+	}
+}
