@@ -193,10 +193,10 @@
 	mask-image: url("Icons/settings.svg") !important;
 }
 
-/* Active space takes the accent colour */
+/* Active space: TB paints an accent pill behind it, so the glyph goes white */
 #spacesToolbar button.current::before,
 #spacesToolbar button[aria-pressed="true"]::before {
-	background-color: var(--mb-accent) !important;
+	background-color: #ffffff !important;
 }
 
 /* Hide settings button label text */
@@ -208,6 +208,8 @@
 #folderPaneGetMessages {
 	position: relative !important;
 	width: 30px !important;
+	/* TB 145 paints its cloud icon via background-image on the button */
+	background-image: none !important;
 }
 
 #folderPaneGetMessages::before {
@@ -249,6 +251,13 @@
 
 #folderTree li[data-server-type]:not(:first-of-type) > .container {
 	margin-top: 14px !important;
+}
+
+/* TB 136+ paints colourful folder icons via background-image with
+   context fill/stroke; clear it so only the masked glyphs below show.
+   The busy spinner is exempt so sync feedback survives. */
+#folderTree li:not([data-is-busy="true"]) > .container > .icon {
+	background-image: none !important;
 }
 
 /* Folder icon overrides — every symbol accent-tinted, like Apple Mail */
@@ -322,6 +331,16 @@
 }
 #folderTree li[data-folder-type="templates"] > .container > .icon[style*="--icon-color"] {
 	background-color: var(--icon-color) !important;
+}
+
+/* Smart / saved-search folders */
+#folderTree li[data-folder-type="virtual"] > .container > .icon {
+	content: none !important;
+	mask-image: url("Icons/folder.svg") !important;
+	mask-repeat: no-repeat !important;
+	mask-size: 16px 16px !important;
+	mask-position: center !important;
+	background-color: var(--mb-accent) !important;
 }
 
 /* Generic folder icon */
@@ -469,10 +488,6 @@ tr.children .thread-card-button:has(.thread-replies[data-l10n-id]) ~ .thread-car
 	margin-top: 8px !important;
 }
 
-& .card-container .sender {
-	padding-inline-start: 3px !important;
-}
-
 /* Compact sender text for short-height cards */
 tr.card-layout[style*="height: 49px"] .sender,
 tr.card-layout[style*="height: 50px"] .sender {
@@ -486,20 +501,18 @@ tr.card-layout.children span.subject {
 	font-size: 0.95em !important;
 }
 
-/* Unread indicator: solid accent dot, Apple Mail style */
-#threadTree[rows="thread-card"] .card-layout td .card-container .read-status {
-	content: var(--read-status-icon) !important;
-	height: var(--read-status-size) !important;
-	width: var(--read-status-size) !important;
-	fill: var(--mb-accent) !important;
-	stroke: var(--mb-accent) !important;
-	margin-left: 0 !important;
+/* Unread indicator: solid accent dot, Apple Mail style. TB paints the dot
+   through these variables (green by default, sparkle star for "new"). */
+#threadTree[rows="thread-card"] .card-layout[data-properties~="unread"] {
+	--read-status-icon: var(--icon-dot) !important;
+	--read-status-fill: var(--mb-accent) !important;
+	--read-status-stroke: var(--mb-accent) !important;
 }
 
-/* Unread indicator inline offset */
+/* Hide the side indicator bar — selection is the pill, unread is the dot */
 #threadTree[rows="thread-card"] .card-layout td .card-container::before {
-	inset-inline-start: calc(var(--indicator-width) * 2 - var(--indicator-gap)) !important;
-	background-color: var(--mb-accent) !important;
+	content: none !important;
+	display: none !important;
 }
 
 /* Remove row highlight behind cards; apply highlight to card itself */
@@ -512,15 +525,23 @@ tr.card-layout.children span.subject {
 	background-color: var(--mb-accent) !important;
 	border: 1px solid transparent !important;
 	border-radius: 8px !important;
+	color: var(--mb-accent-text) !important;
 }
 
 [is="tree-view-table-body"] .card-layout.selected.current .card-container :is(.sender, .subject, .date, .thread-card-subject-container) {
 	color: var(--mb-accent-text) !important;
 }
 
-[is="tree-view-table-body"] .card-layout.selected.current .card-container .read-status {
-	fill: var(--mb-accent-text) !important;
-	stroke: var(--mb-accent-text) !important;
+/* Card buttons (star, more, twisty) follow the white text */
+[is="tree-view-table-body"] .card-layout.selected.current .card-container :is(button, .twisty) {
+	color: var(--mb-accent-text) !important;
+	fill: color-mix(in srgb, currentColor 20%, transparent) !important;
+	stroke: currentColor !important;
+}
+
+[is="tree-view-table-body"] .card-layout[data-properties~="unread"].selected.current {
+	--read-status-fill: var(--mb-accent-text) !important;
+	--read-status-stroke: var(--mb-accent-text) !important;
 }
 
 /* Unfocused selected card: quiet grey pill, default text */
@@ -530,7 +551,8 @@ tr.card-layout.children span.subject {
 	border: 1px solid transparent !important;
 }
 
-#threadTree[rows="thread-card"]:not(:focus, :focus-within) .card-layout.selected.current .card-container :is(.sender, .subject, .date) {
+#threadTree[rows="thread-card"]:not(:focus, :focus-within) .card-layout.selected.current .card-container,
+#threadTree[rows="thread-card"]:not(:focus, :focus-within) .card-layout.selected.current .card-container :is(.sender, .subject, .date, button, .twisty) {
 	color: inherit !important;
 }
 
@@ -538,13 +560,9 @@ tr.card-layout.children span.subject {
 	color: var(--mb-text-secondary) !important;
 }
 
-#threadTree[rows="thread-card"]:not(:focus, :focus-within) .card-layout.selected.current .card-container .read-status {
-	fill: var(--mb-accent) !important;
-	stroke: var(--mb-accent) !important;
-}
-
-&.selected.current {
-	--tree-card-background: var(--mb-selected-unfocused);
+#threadTree[rows="thread-card"]:not(:focus, :focus-within) .card-layout[data-properties~="unread"].selected.current {
+	--read-status-fill: var(--mb-accent) !important;
+	--read-status-stroke: var(--mb-accent) !important;
 }
 
 /* Selected table-layout row */
