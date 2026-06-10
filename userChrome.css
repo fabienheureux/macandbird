@@ -63,6 +63,21 @@
 }
 
 /* =====================================================
+   DENSITY — Apple Mail breathing room.
+   Applies at Default density only; Thunderbird's own
+   Compact/Relaxed settings still work if chosen.
+   ===================================================== */
+
+:root:not([uidensity]) {
+	/* Sidebar & list rows: 26px -> 30px, like Mail's source list */
+	--list-item-min-height: 30px !important;
+	/* Message cards: more inter-card air and side inset */
+	--tree-card-block: 4px !important;
+	--tree-card-inline: 10px !important;
+	--thread-card-content-gap: 5px !important;
+}
+
+/* =====================================================
    LAYOUT & WINDOW CHROME
    ===================================================== */
 
@@ -475,18 +490,6 @@ tr.children .thread-card-button:has(.thread-replies[data-l10n-id]) ~ .thread-car
 	margin-left: 15px !important;
 }
 
-/* Card layout spacing */
-.thread-card-dynamic-row {
-	gap: 0px !important;
-	row-gap: 0px !important;
-	padding-bottom: 0px !important;
-	margin-bottom: 0px !important;
-}
-
-.thread-card-dynamic-row > .thread-card-button {
-	align-self: end !important;
-}
-
 /* Card subject / preview text: secondary label colour */
 .thread-card-subject-container {
 	color: var(--mb-text-secondary);
@@ -498,7 +501,6 @@ tr.children .thread-card-button:has(.thread-replies[data-l10n-id]) ~ .thread-car
 .sender {
 	font-size: 1.05rem !important;
 	font-weight: 600 !important;
-	margin-top: 8px !important;
 }
 
 /* Compact sender text for short-height cards */
@@ -582,15 +584,6 @@ tr.card-layout.children span.subject {
 tr.table-layout.selected.current {
 	background-color: var(--mb-accent) !important;
 	color: var(--mb-accent-text) !important;
-}
-
-/* Twisty button position fix */
-.button.button-flat.button-reset.twisty.thread-card-button {
-	margin-top: -38px !important;
-}
-
-.thread-card-icon-info {
-	margin-top: -15px;
 }
 
 /* Grouped-by-sort child rows */
