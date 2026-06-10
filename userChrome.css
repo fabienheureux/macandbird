@@ -26,15 +26,23 @@
 	--mb-text-secondary: rgba(60, 60, 67, 0.6);
 	--mb-text-tertiary: rgba(60, 60, 67, 0.33);
 
-	/* Toolbar / template-image icon tint (monochrome, like Apple Mail) */
-	--mb-icon: #5d5d63;
+	/* Toolbar / template-image icon tint — near-black, like Mail.app glyphs */
+	--mb-icon: #2a2a2e;
+
+	/* Sidebar section headers (account names) */
+	--mb-section-header: rgba(60, 60, 67, 0.8);
+
+	/* Toolbar pill buttons */
+	--mb-button-bg: #ffffff;
+	--mb-button-hover: #f2f2f4;
+	--mb-button-border: rgba(0, 0, 0, 0.1);
 
 	/* Surfaces */
 	--mb-sidebar-bg: #f2f2f4;
 	--mb-content-bg: #ffffff;
 
 	/* Selection */
-	--mb-sidebar-pill: rgba(0, 0, 0, 0.085);
+	--mb-sidebar-pill: rgba(0, 0, 0, 0.11);
 	--mb-selected-unfocused: #e3e3e6;
 
 	/* Hairlines & hover */
@@ -244,8 +252,8 @@
 /* Account-level row: small, semibold, secondary — a section header */
 #folderTree li[data-server-type] > .container > .name {
 	font-weight: 700 !important;
-	font-size: 0.82rem !important;
-	color: var(--mb-text-secondary) !important;
+	font-size: 0.84rem !important;
+	color: var(--mb-section-header) !important;
 	letter-spacing: 0.01em !important;
 }
 
@@ -408,6 +416,11 @@ ol[role="tree"] .container .twisty {
 	border-color: transparent !important;
 	background-color: var(--mb-sidebar-pill) !important;
 	border-radius: 7px !important;
+}
+
+/* Selected folder name goes semibold, like Mail */
+#folderTree li.selected > .container > .name {
+	font-weight: 600 !important;
 }
 
 /* Fix for icon clashes in navigator (inherited from FluentBird) */
@@ -716,9 +729,20 @@ tree-view[data-show-grouped-by-sort="true"] .card-layout.children *:hover {
 	margin-right: -5px;
 }
 
-/* No borders on message header buttons — they read as plain glyph buttons */
+/* Message header buttons: Mail.app pill buttons — raised surface,
+   hairline border, soft shadow, near-black glyphs */
+#messageHeader .toolbarbutton-1 {
+	background-color: var(--mb-button-bg) !important;
+	border-radius: 999px !important;
+	box-shadow: 0 0.5px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+#messageHeader .toolbarbutton-1:hover {
+	background-color: var(--mb-button-hover) !important;
+}
+
 #messageHeader:not(.message-header-buttons-only-icons) .toolbarbutton-1.message-header-view-button:not([is="toolbarbutton-menu-button"]) {
-	border-color: transparent !important;
+	border-color: var(--mb-button-border) !important;
 }
 
 #hdrReplyAllButton .toolbarbutton-menubutton-button,
@@ -726,12 +750,12 @@ tree-view[data-show-grouped-by-sort="true"] .card-layout.children *:hover {
 #hdrReplyListButton .toolbarbutton-menubutton-button,
 #hdrReplyListButton .toolbarbutton-menubutton-dropmarker,
 #hdrReplyListButton {
-	border-color: transparent !important;
+	border-color: var(--mb-button-border) !important;
 }
 
 #hdrReplyListButton .toolbarbutton-menubutton-button,
 #hdrReplyListButton .toolbarbutton-menubutton-dropmarker {
-	border: 1px solid transparent !important;
+	border: 1px solid var(--mb-button-border) !important;
 	box-sizing: border-box !important;
 }
 
@@ -1037,12 +1061,18 @@ global-search-bar {
 		--mb-text-secondary: rgba(235, 235, 245, 0.6);
 		--mb-text-tertiary: rgba(235, 235, 245, 0.3);
 
-		--mb-icon: #a8a8ad;
+		--mb-icon: #dededf;
+
+		--mb-section-header: rgba(235, 235, 245, 0.7);
+
+		--mb-button-bg: #3a3a3c;
+		--mb-button-hover: #48484a;
+		--mb-button-border: rgba(255, 255, 255, 0.1);
 
 		--mb-sidebar-bg: #2a2a2c;
 		--mb-content-bg: #1e1e1e;
 
-		--mb-sidebar-pill: rgba(255, 255, 255, 0.12);
+		--mb-sidebar-pill: rgba(255, 255, 255, 0.16);
 		--mb-selected-unfocused: #3a3a3c;
 
 		--mb-separator: rgba(255, 255, 255, 0.12);
